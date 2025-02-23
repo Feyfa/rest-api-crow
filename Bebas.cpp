@@ -1,4 +1,4 @@
-//msbuild Bebas.sln; .\x64\Debug\Bebas.exe`
+//msbuild Bebas.sln; .\x64\Debug\Bebas.exe
 #include <iostream>
 #include "helpers/MyLogging/MyLogging.h"
 #include <crow.h>
@@ -22,9 +22,11 @@ int main()
 
     CROW_ROUTE(app, "/home").
     methods("GET"_method)
-    ([]() {
-        CROW_LOG_INFO << "Home Page 123456789";
-        return crow::response{200, "Home Page 123456789"};
+    ([](const crow::request &request) {
+        std::string nama = (request.url_params.get("nama") != nullptr) ? request.url_params.get("nama") : std::string("");
+
+        CROW_LOG_INFO << std::format("Halaman Home, Nama = {}", nama);
+        return crow::response{200, std::format("Halaman Home, Nama = {}", nama)};
     });
     /* METHOD GET */
 
